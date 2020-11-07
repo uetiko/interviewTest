@@ -1,0 +1,17 @@
+{
+    "name": "uetiko/infotec",
+    "require": {},
+    "require-dev": {
+        "phpunir/phpunit": "^9.1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Uetiko\\Infotec\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Uetiko\\Infotec\\Test": "test/"
+        }
+    }
+}
