@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Uetiko\Infotec\Calculator;
 
+use Exception;
 use ArrayObject;
 
 class CountWords
@@ -45,5 +46,15 @@ class CountWords
         foreach ($this->count() as $word => $value){
             print_r("word:{$word} == value:{$value}\n");
         }
+    }
+
+    public function whereIsBob(array $names): int
+    {
+        $names = new ArrayObject($names);
+        if (false == in_array('Bob', $names->getArrayCopy())){
+            throw new Exception('Bob is missing');
+        }
+
+        return array_search('Bob', $names->getArrayCopy());
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Uetiko\Infotec\Test\Calculator;
 
+use Exception;
 use ArrayObject;
 use Uetiko\Infotec\Calculator\CountWords;
 use PHPUnit\Framework\TestCase;
@@ -20,15 +21,59 @@ class CountWordsTest extends TestCase
         ];
     }
 
+    public function namesBobProvider(): array
+    {
+        return [
+            [
+                ["Armando", "Bob", "Alice"]
+            ]
+        ];
+    }
+
+    public function namesBobMissing(): array
+    {
+        return [
+            [
+                ["Jimmy", "James", "Ana"]
+            ]
+        ];
+    }
+
     /**
      * @test
      * @dataProvider textProvider
-     * @covers \Uetiko\Infotec\Calculator\CountWords
+     * @covers \Uetiko\Infotec\Calculator\CountWords::count
      */
     public function countWords(string $text)
     {
         $count = new CountWords($text);
         $this->assertInstanceOf(ArrayObject::class, $count->count());
-        $count->printResult();
+    }
+
+    /**
+     * @test
+     * @dataProvider namesBobProvider
+     * @covers \Uetiko\Infotec\Calculator\CountWords::whereIsBob
+     * @param array $names
+     * @throws \Exception
+     */
+    public function whereIsBob(array $names)
+    {
+        $count = new CountWords('');
+        $this->assertIsInt($count->whereIsBob($names));
+        $this->assertEquals(1, $count->whereIsBob($names));
+    }
+
+    /**
+     * @test
+     * @dataProvider namesBobMissing
+     * @covers \Uetiko\Infotec\Calculator\CountWords::whereIsBob
+     * @param array $names
+     */
+    public function whereIsBobMissing(array $names)
+    {
+        $this->expectException(Exception::class);
+        $count = new CountWords('');
+        $this->assertIsInt($count->whereIsBob($names));
     }
 }
