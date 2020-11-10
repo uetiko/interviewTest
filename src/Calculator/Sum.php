@@ -13,21 +13,44 @@ class Sum
      * @return int
      * @throws InvalidArgumentException
      */
-    public function add(string $numbers): int
+    private function isValid(string $numbers): void
     {
         if (empty($numbers)) {
             throw new InvalidArgumentException("The string is empty");
         }
-
-        return $this->sumArray(explode(',', $numbers));
     }
 
-    private function sumArray(array $numbers): int
+    public function sumArray(string $numbers): int
     {
         $result = 0;
-        foreach ($numbers as $number){
+        $this->isValid($numbers);
+        foreach (explode(',', $numbers) as $number){
             $result += (int)$number;
         }
         return $result;
+    }
+
+    public function sumArrayReduce(string $numbers):int
+    {
+        $this->isValid($numbers);
+
+        return array_reduce(
+            explode(',', $numbers),
+            function($carry, $item){
+                return ($carry + (int)$item);
+            },
+            0
+        );
+    }
+
+    public function cubSum(array $numbers): int
+    {
+        return array_reduce(
+            $numbers,
+            function ($carry, $item){
+                return $carry + pow($item, 3);
+            },
+            0
+        );
     }
 }

@@ -19,6 +19,17 @@ class SumTest extends TestCase
         ];
     }
 
+    public function arrayIntProvider(): array
+    {
+        return [
+            [
+                [4,8,3],
+                [8,3,4,2],
+                [31,46,85,64]
+            ]
+        ];
+    }
+
     public function wrongStringProvider(): array
     {
         return [
@@ -32,7 +43,7 @@ class SumTest extends TestCase
      */
     public function sumString(string $numbers){
         $numbersObj = new Sum();
-        $result = $numbersObj->add($numbers);
+        $result = $numbersObj->sumArray($numbers);
         $this->assertIsInt($result);
     }
 
@@ -45,6 +56,30 @@ class SumTest extends TestCase
     {
         $numberObj = new Sum();
         $this->expectException(InvalidArgumentException::class);
-        $this->assertIsInt($numberObj->add($numbers));
+        $this->assertIsInt($numberObj->sumArray($numbers));
+    }
+
+    /**
+     * @test
+     * @dataProvider stringProvider
+     * @covers \Uetiko\Infotec\Calculator\Sum::sumArrayReduce
+     */
+    public function sumReduce(string $test)
+    {
+        $number = new Sum();
+        $this->assertEquals(6, $number->sumArrayReduce('1, 2, 3'));
+        $this->assertIsInt($number->sumArrayReduce($test));
+    }
+
+    /**
+     * @test
+     * @dataProvider arrayIntProvider
+     * @covers \Uetiko\Infotec\Calculator\Sum::cubSum
+     */
+    public function cubSum(array $nums)
+    {
+        $num = new Sum();
+        $this->assertEquals(855, $num->cubSum([1,5,9]));
+        $this->assertIsInt($num->cubSum($nums));
     }
 }
